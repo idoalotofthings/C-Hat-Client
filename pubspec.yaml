@@ -23,6 +23,8 @@ dependencies:
 
   platform_ui:
     path: platform_ui/
+  flutter_bloc: ^8.1.1
+  intl: ^0.17.0
 
 
 dev_dependencies:

@@ -13,20 +13,17 @@ abstract class WebSocketClient {
 }
 
 class RegisterWebSocketClient extends WebSocketClient {
-
   late WebSocketChannel channel;
   RegisterViewModel viewModel = RegisterViewModel.getInstance()!;
 
   RegisterWebSocketClient(super.wsUrl);
 
-  void registerUser(String username, String password, String mailId){
-
+  void registerUser(String username, String password, String mailId) {
     viewModel.result.value = Result.wait;
 
     try {
-      channel = WebSocketChannel.connect(
-        Uri.parse("wss://${super.wsUrl}/register")
-      );
+      channel =
+          WebSocketChannel.connect(Uri.parse("wss://${super.wsUrl}/register"));
     } on Exception {
       viewModel.result.value = Result.error;
     }
@@ -40,41 +37,35 @@ class RegisterWebSocketClient extends WebSocketClient {
 
     listen();
   }
-  
+
   void listen() {
+    Map jsonData = {};
+
     channel.stream.listen((event) {
-      Map jsonData = jsonDecode(event);
+      jsonData = jsonDecode(event);
       if (jsonData["event"] == "confirmation") {
-        if(jsonData["status"] == "done") {
+        if (jsonData["status"] == "done") {
           viewModel.result.value = Result.success;
         } else {
           viewModel.result.value = Result.error;
         }
-      }   
+      }
     });
+
+    //return subscription;
   }
 
-  void verifyUser(int code){
-    channel.sink.add(jsonEncode({
-      "event": "confirmation",
-      "code": "$code"
-    }));
+  void verifyUser(int code) {
+    channel.sink.add(jsonEncode({"event": "confirmation", "code": "$code"}));
   }
-
-
 }
 
-
 class ChatWebSocketClient extends WebSocketClient {
-  
   late WebSocketChannel _channel;
   ChatViewModel viewModel = ChatViewModel.getInstance()!;
 
   ChatWebSocketClient(super.wsUrl) {
-    _channel = WebSocketChannel.connect(
-      Uri.parse("wss://${super.wsUrl}/chat")
-    );
-
+    _channel = WebSocketChannel.connect(Uri.parse("wss://${super.wsUrl}/chat"));
   }
 
   Future<Result> login(User user) async {
@@ -82,30 +73,9 @@ class ChatWebSocketClient extends WebSocketClient {
     return Result.success;
   }
 
-  void listen() {
-    _channel.stream.listen((event) {
-
-      if(viewModel.message.value != null){
-         
-        List<Message> tempList = []; 
-
-        for(Message i in viewModel.message.value!) {
-          tempList.add(i);
-        }
-        
-        tempList.add(Message.fromJson(event));
-        viewModel.message.value = tempList;
-      } else {
-        
-        viewModel.message.value = [Message.fromJson(event.toString())];
-      }
-    });
-  }
-
   void sendMessage(Message message) {
     _channel.sink.add(message.toJson());
   }
 
   WebSocketChannel get channel => _channel;
-
 }

@@ -51,7 +51,6 @@ class ChatViewModel {
   
   Future<Result> login(User user) async {
     wsClient = ChatWebSocketClient(_url.value!);
-    listen();
     if(_user.value!.username == "Swastik") {
       recipient.value = User("Mummy", "FF2");
     } else if (_user.value!.username == "Mummy"){
@@ -61,7 +60,6 @@ class ChatViewModel {
     return await wsClient.login(user);
   }
 
-  void listen() => wsClient.listen();
 
 }
 

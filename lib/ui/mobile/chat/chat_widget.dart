@@ -1,14 +1,16 @@
+import 'package:c_hat/ui/shared/chat_bloc/chat_widget_bloc.dart';
+import 'package:c_hat/ui/shared/chat_bloc/chat_widget_event.dart';
+import 'package:c_hat/ui/shared/recipient_cubit/recipient_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:c_hat/model/message.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:platform_ui/platform_ui.dart';
 import 'package:c_hat/ui/mobile/chat/chat_message_widget.dart';
-import 'package:c_hat/viewmodel/chat_viewmodel.dart';
 
 class ChatWidget extends StatefulWidget {
   final Platform platform;
   final controller = TextEditingController();
-  final ChatViewModel viewModel = ChatViewModel.getInstance()!;
 
   ChatWidget(this.platform, {Key? key}) : super(key: key);
 
@@ -17,81 +19,75 @@ class ChatWidget extends StatefulWidget {
 }
 
 class _ChatWidgetState extends State<ChatWidget> {
-  void sendMessage(Message message) {
-    widget.viewModel.sendMessage(message);
-  }
-
-  List? _messageList;
 
   @override
   Widget build(BuildContext context) {
-    print(widget.viewModel.recipient.value!.username);
-    if(widget.viewModel.message.value == null){
-      _messageList = [];
-    } else {
-      _messageList = widget.viewModel.message.value!.reversed.toList();
-    }
-
-    widget.viewModel.message.observe(() {
-      setState(() => _messageList = widget.viewModel.message.value);
-    });
 
     return PlatformScaffold(widget.platform,
         appBar: AppBar(
-          title: Text(widget.viewModel.recipient.value!.username),
+          title: Text(BlocProvider.of<ChatWidgetBloc>(context).user.username),
         ),
         cupertinoBar: CupertinoNavigationBar(
-          middle: Text(widget.viewModel.recipient.value!.username),
+          middle: Text(BlocProvider.of<ChatWidgetBloc>(context).user.username),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView.builder(
-                  reverse: true,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: _messageList!.length,
-                  itemBuilder: (context, index) {
-                    return ChatMessageWidget(
-                      message: _messageList![index],
-                    );
-                  },
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: PlatformTextField(widget.platform,
-                        hint: "Enter your message for ${widget.viewModel.recipient.value!.username}",
-                        controller: widget.controller),
+        body: BlocProvider<ChatWidgetBloc>.value(
+            value: context.read<ChatWidgetBloc>(),
+            child: BlocBuilder<ChatWidgetBloc, List<Message>>(
+                builder: ((context, state) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView.builder(
+                        reverse: true,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: state.length,
+                        itemBuilder: (context, index) {
+                          return ChatMessageWidget(
+                            message: state[index],
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: PlatformFilledButton(
-                    widget.platform,
-                    onPressed: () {
-                      sendMessage(Message(
-                          widget.controller.text,
-                          widget.viewModel.user.value.username,
-                          DateTime.now().toString(),
-                          widget.viewModel.recipient.value!.clientId
-                        ));
-
-                        widget.controller.text = "";
-                    },
-                    child: const Icon(Icons.send),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ));
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: PlatformTextField(widget.platform,
+                              hint:
+                                  "Enter your message for ${context.read<ChatWidgetBloc>().user.username}",
+                              controller: widget.controller),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: PlatformFilledButton(
+                          widget.platform,
+                          onPressed: () {
+                            context
+                                .read<ChatWidgetBloc>()
+                                .add(MessageSentEvent(
+                                  message: Message(
+                                    widget.controller.text,
+                                    context.read<ChatWidgetBloc>().user.username,
+                                    TimeOfDay.fromDateTime(DateTime.now()).toString(),
+                                    BlocProvider.of<RecipientCubit>(context).state!.clientId
+                                  )
+                                ));
+                            widget.controller.text = "";
+                          },
+                          child: const Icon(Icons.send),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              );
+            }))));
   }
 }

@@ -69,31 +69,37 @@ class LoginRoute extends StatelessWidget {
                   width: 256,
                   hint: "Password"),
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 PlatformFilledButton(
-                  platform,  
+                  platform,
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: ((context) => RegisterRoute(platform))));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => RegisterRoute(platform))));
                   },
                   child: const Text("Register"),
                 )
               ],
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: PlatformFilledButton(platform, onPressed: () {
+                    var user = User(_usernameTextFieldController.text, "");
                     connect();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => UserListRoute(platform))));
+                            builder: ((context) => UserListRoute(
+                                  platform,
+                                  url: _serverIpTextFieldController.text,
+                                  loggedInUser: user,
+                                ))));
                   }, child: const Text("Login")),
                 ),
                 Padding(
