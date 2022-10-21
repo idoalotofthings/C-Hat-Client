@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:c_hat/model/message.dart';
-import 'package:c_hat/platform_ui/platform_ui.dart';
+import 'package:platform_ui/platform_ui.dart';
 import 'package:c_hat/ui/mobile/chat/chat_message_widget.dart';
 import 'package:c_hat/viewmodel/chat_viewmodel.dart';
 

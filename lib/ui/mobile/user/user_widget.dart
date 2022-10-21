@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:c_hat/model/user.dart';
-import 'package:c_hat/platform_ui/platform_ui.dart';
+import 'package:platform_ui/platform_ui.dart';
 
 class UserView extends StatelessWidget {
   final User user;

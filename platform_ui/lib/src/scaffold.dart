@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/cupertino.dart' as cupertino;
-import 'package:c_hat/platform_ui/src/platform.dart';
+import 'platform.dart';
 import 'platform_widget.dart';
 
 class PlatformScaffold extends PlatformWidget {

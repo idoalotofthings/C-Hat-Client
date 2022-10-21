@@ -2,7 +2,7 @@ import 'package:flutter/material.dart' as material;
 import 'package:flutter/cupertino.dart' as cupertino;
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'platform_widget.dart';
-import 'package:c_hat/platform_ui/src/platform.dart';
+import '../src/platform.dart';
 
 class PlatformButton extends PlatformWidget {
   

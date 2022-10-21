@@ -142,6 +142,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.2"
+  platform_ui:
+    dependency: "direct main"
+    description:
+      path: platform_ui
+      relative: true
+    source: path
+    version: "1.0.0+1"
   recase:
     dependency: transitive
     description:

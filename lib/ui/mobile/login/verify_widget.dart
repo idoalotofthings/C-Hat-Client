@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:c_hat/platform_ui/platform_ui.dart';
+import 'package:platform_ui/platform_ui.dart';
 
 class VerifyWidget extends StatelessWidget {
 

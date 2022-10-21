@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:c_hat/platform_ui/src/platform.dart';
+import 'platform.dart';
 
 abstract class PlatformWidget extends StatelessWidget {
 

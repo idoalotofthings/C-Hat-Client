@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:c_hat/model/user.dart';
-import 'package:c_hat/platform_ui/platform_ui.dart';
+import 'package:platform_ui/platform_ui.dart';
 import 'package:c_hat/ui/mobile/user_list/user_list_widget.dart';
 import 'package:c_hat/ui/shared/heading_text.dart';
 import 'package:c_hat/viewmodel/chat_viewmodel.dart';
