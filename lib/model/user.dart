@@ -4,13 +4,13 @@ class User {
   String? username;
   String? clientId;
   String? password;
-  String mailId;
+  String? mailId;
 
-  User(this.mailId, {this.username, this.clientId, this.password});
+  User({this.mailId, this.username, this.clientId, this.password});
 
   factory User.fromJson(String json) {
     Map jsonData = jsonDecode(json);
-    return User(jsonData["mail_id"], username: jsonData["username"],clientId: jsonData["client_id"]);
+    return User(mailId: jsonData["mail_id"], username: jsonData["username"],clientId: jsonData["client_id"]);
   }
 
   String toJson(String event) {
