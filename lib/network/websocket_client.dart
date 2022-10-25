@@ -12,7 +12,6 @@ class RegisterWebSocketClient extends WebSocketClient {
   RegisterWebSocketClient(super.wsUrl) {
     channel =
         WebSocketChannel.connect(Uri.parse("ws://${super.wsUrl}/register"));
-    print(channel.protocol);
   }
 }
 

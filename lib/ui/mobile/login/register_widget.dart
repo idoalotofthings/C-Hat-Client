@@ -79,7 +79,7 @@ class _RegisterRouteState extends State<RegisterRoute> {
                               _serverIpTextFieldController.text));
 
                       final user = User(
-                        _mailTextFieldController.text,
+                        mailId: _mailTextFieldController.text,
                         username: _usernameTextFieldController.text,
                         password: _passwordTextFieldController.text,
                       );

@@ -95,7 +95,7 @@ class LoginRoute extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: PlatformFilledButton(platform, onPressed: () {
-                        var user = User(_mailIdTextFieldController.text,
+                        var user = User(mailId: _mailIdTextFieldController.text,
                             password: _passwordTextFieldController.text);
 
                         final repository = ChatRepository(ChatWebSocketClient(
@@ -122,7 +122,7 @@ class LoginRoute extends StatelessWidget {
                                                   UserListRoute(
                                                       platform, chatBloc,
                                                       loggedInUser: User(
-                                                        user.mailId,
+                                                        mailId: user.mailId,
                                                         username:
                                                             state.username,
                                                         clientId:
