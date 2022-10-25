@@ -2,6 +2,7 @@ import 'package:c_hat/model/user.dart';
 import 'package:c_hat/ui/shared/chat_bloc/chat_widget_bloc.dart';
 import 'package:c_hat/ui/shared/chat_bloc/chat_widget_event.dart';
 import 'package:c_hat/ui/shared/recipient_cubit/recipient_cubit.dart';
+import 'package:c_hat/ui/shared/user_list_bloc/user_list_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:platform_ui/platform_ui.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:c_hat/ui/mobile/chat/chat_widget.dart';
 import 'package:c_hat/ui/mobile/user/user_widget.dart';
 
 class UserListElement extends StatefulWidget {
+
   final User user;
   final ChatWidgetBloc bloc;
   final Platform platform;
@@ -43,8 +45,8 @@ class _UserListElementState extends State<UserListElement> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: ((context) =>
-                        ChatWidget(widget.platform, widget.bloc, widget.cubit))));
+                    builder: ((context) => ChatWidget(
+                        widget.platform, widget.bloc, widget.cubit))));
           },
           child: Card(
             color: Theme.of(context).colorScheme.surface,
