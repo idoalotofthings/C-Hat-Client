@@ -5,16 +5,22 @@ import 'platform_widget.dart';
 import 'platform.dart';
 
 class PlatformTextField extends PlatformWidget {
-  
   final String hint;
   final double? width;
   final material.TextEditingController controller;
+  final bool isPassword;
 
-  const PlatformTextField(super.platform, {required this.hint, this.width, required this.controller, material.Key? key}) : super(key: key);
+  const PlatformTextField(super.platform,
+      {required this.hint,
+      this.width,
+      required this.controller,
+      material.Key? key,
+      this.isPassword = false})
+      : super(key: key);
 
   @override
   material.Widget build(material.BuildContext context) {
-    switch(platform) {
+    switch (platform) {
       case Platform.android:
       case Platform.linux:
       case Platform.web:
@@ -23,13 +29,13 @@ class PlatformTextField extends PlatformWidget {
           child: material.TextField(
             controller: controller,
             decoration: material.InputDecoration(
-              border: const material.OutlineInputBorder(),
-              hintText: hint
-            ),
+                border: const material.OutlineInputBorder(),
+                label: material.Text(hint)),
+            obscureText: isPassword,
           ),
         );
 
-      case Platform.windows: 
+      case Platform.windows:
         return material.SizedBox(
           width: width,
           child: fluent.TextBox(

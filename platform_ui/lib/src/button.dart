@@ -43,8 +43,8 @@ class PlatformFilledButton extends PlatformButton {
       case Platform.web:
         return material.ElevatedButton(
           style: material.ElevatedButton.styleFrom(
-            primary: material.Theme.of(context).colorScheme.primary,
-            onPrimary: material.Theme.of(context).colorScheme.onPrimary,
+            backgroundColor: material.Theme.of(context).colorScheme.primary,
+            foregroundColor: material.Theme.of(context).colorScheme.onPrimary,
           ),
           onPressed: onPressed, 
           child: child
