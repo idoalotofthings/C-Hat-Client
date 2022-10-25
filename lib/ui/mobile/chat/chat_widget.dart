@@ -1,5 +1,6 @@
 import 'package:c_hat/ui/shared/chat_bloc/chat_widget_bloc.dart';
 import 'package:c_hat/ui/shared/chat_bloc/chat_widget_event.dart';
+import 'package:c_hat/ui/shared/chat_bloc/chat_widget_state.dart';
 import 'package:c_hat/ui/shared/recipient_cubit/recipient_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,30 +11,40 @@ import 'package:c_hat/ui/mobile/chat/chat_message_widget.dart';
 
 class ChatWidget extends StatefulWidget {
   final Platform platform;
+  final ChatWidgetBloc bloc;
+  final RecipientCubit cubit;
   final controller = TextEditingController();
 
-  ChatWidget(this.platform, {Key? key}) : super(key: key);
+  ChatWidget(this.platform, this.bloc, this.cubit, {Key? key})
+      : super(key: key);
 
   @override
   State<ChatWidget> createState() => _ChatWidgetState();
 }
 
 class _ChatWidgetState extends State<ChatWidget> {
+  List<Message> messages = [];
 
   @override
   Widget build(BuildContext context) {
-
     return PlatformScaffold(widget.platform,
         appBar: AppBar(
-          title: Text(BlocProvider.of<ChatWidgetBloc>(context).user.username),
+          title: Text(widget.bloc.user.username!),
         ),
         cupertinoBar: CupertinoNavigationBar(
-          middle: Text(BlocProvider.of<ChatWidgetBloc>(context).user.username),
+          middle: Text(widget.bloc.user.username!),
         ),
         body: BlocProvider<ChatWidgetBloc>.value(
-            value: context.read<ChatWidgetBloc>(),
-            child: BlocBuilder<ChatWidgetBloc, List<Message>>(
+            value: widget.bloc,
+            child: BlocBuilder<ChatWidgetBloc, ChatState>(
                 builder: ((context, state) {
+              print("object");
+              var messages = [];
+
+              if (state is MessageReceivedState) {
+                messages = state.messageList;
+              }
+
               return Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -44,10 +55,10 @@ class _ChatWidgetState extends State<ChatWidget> {
                         reverse: true,
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        itemCount: state.length,
+                        itemCount: messages.length,
                         itemBuilder: (context, index) {
                           return ChatMessageWidget(
-                            message: state[index],
+                            message: messages.reversed.toList()[index],
                           );
                         },
                       ),
@@ -60,7 +71,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                           padding: const EdgeInsets.all(4.0),
                           child: PlatformTextField(widget.platform,
                               hint:
-                                  "Enter your message for ${context.read<ChatWidgetBloc>().user.username}",
+                                  "Enter your message for ${widget.bloc.user.username}",
                               controller: widget.controller),
                         ),
                       ),
@@ -69,16 +80,16 @@ class _ChatWidgetState extends State<ChatWidget> {
                         child: PlatformFilledButton(
                           widget.platform,
                           onPressed: () {
-                            context
-                                .read<ChatWidgetBloc>()
-                                .add(MessageSentEvent(
-                                  message: Message(
-                                    widget.controller.text,
-                                    context.read<ChatWidgetBloc>().user.username,
-                                    TimeOfDay.fromDateTime(DateTime.now()).toString(),
-                                    BlocProvider.of<RecipientCubit>(context).state!.clientId
-                                  )
-                                ));
+                            var message = Message(
+                                widget.controller.text,
+                                widget.bloc.user.username!,
+                                TimeOfDay.fromDateTime(DateTime.now())
+                                    .toString()
+                                    .replaceAll("TimeOfDay(", "")
+                                    .replaceAll(")", ""),
+                                widget.cubit.state!.clientId!);
+                            
+                            widget.bloc.add(MessageSentEvent(message: message));
                             widget.controller.text = "";
                           },
                           child: const Icon(Icons.send),
