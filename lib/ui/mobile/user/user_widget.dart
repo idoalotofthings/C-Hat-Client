@@ -15,10 +15,10 @@ class UserView extends StatelessWidget {
     return PlatformScaffold(
       platform,
       appBar: AppBar(
-        title: Text(user.username),
+        title: Text(user.username!),
       ),
       cupertinoBar: CupertinoNavigationBar(
-        middle: Text(user.username),
+        middle: Text(user.username!),
       ),
       body: Column(
         children: [
@@ -34,7 +34,7 @@ class UserView extends StatelessWidget {
                       backgroundColor: Colors.red,
                       foregroundImage: AssetImage("assets/images/user_avatar.png")),
                 ),
-                Text(user.username, style: const TextStyle(fontSize: 20))
+                Text(user.username!, style: const TextStyle(fontSize: 20))
               ],
             ),
           ),

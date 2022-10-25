@@ -1,19 +1,17 @@
 import 'package:c_hat/model/user.dart';
 import 'package:c_hat/ui/shared/chat_bloc/chat_widget_bloc.dart';
-import 'package:c_hat/ui/shared/chat_bloc/chat_widget_event.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:platform_ui/platform_ui.dart';
 import 'package:c_hat/ui/mobile/user_list/user_list_element.dart';
 
 class UserListRoute extends StatefulWidget {
   final User loggedInUser;
-
+  final ChatWidgetBloc bloc;
   final Platform platform;
-  final String url;
 
-  const UserListRoute(this.platform, {required this.loggedInUser, required this.url, Key? key})
+  const UserListRoute(this.platform, this.bloc,
+      {required this.loggedInUser, Key? key})
       : super(key: key);
 
   @override
@@ -34,7 +32,11 @@ class _UserListRouteState extends State<UserListRoute> {
       body: ListView.builder(
         itemCount: 1,
         itemBuilder: (context, index) {
-          return UserListElement(widget.platform, url: widget.url, user: widget.loggedInUser,);
+          return UserListElement(
+            widget.platform,
+            widget.bloc,
+            user: widget.loggedInUser,
+          );
         },
       ),
       actionButton: FloatingActionButton(

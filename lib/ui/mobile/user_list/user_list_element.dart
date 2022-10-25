@@ -10,12 +10,11 @@ import 'package:c_hat/ui/mobile/user/user_widget.dart';
 
 class UserListElement extends StatefulWidget {
   final User user;
-
+  final ChatWidgetBloc bloc;
   final Platform platform;
-  final String url;
+  final cubit = RecipientCubit();
 
-  const UserListElement(this.platform,
-      {required this.user, required this.url, Key? key})
+  UserListElement(this.platform, this.bloc, {required this.user, Key? key})
       : super(key: key);
 
   @override
@@ -25,9 +24,10 @@ class UserListElement extends StatefulWidget {
 class _UserListElementState extends State<UserListElement> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ChatWidgetBloc>(
-      create: (context) => ChatWidgetBloc()
-        ..add(ListenToStreamEvent(widget.url, user: widget.user)),
+    widget.cubit.value = widget.user;
+
+    return BlocProvider<ChatWidgetBloc>.value(
+      value: widget.bloc..add(ListenToStreamEvent(user: widget.user)),
       child: BlocProvider<RecipientCubit>(
         create: (context) => RecipientCubit(),
         child: GestureDetector(
@@ -35,15 +35,16 @@ class _UserListElementState extends State<UserListElement> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: ((context) => UserView(widget.platform,
-                        user: BlocProvider.of<RecipientCubit>(context).value!))));
+                    builder: ((context) =>
+                        UserView(widget.platform, user: widget.cubit.value!))));
           },
           onTap: () {
-            context.read<RecipientCubit>().value = widget.user;
+            widget.bloc.user = widget.user;
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: ((context) => ChatWidget(widget.platform))));
+                    builder: ((context) =>
+                        ChatWidget(widget.platform, widget.bloc, widget.cubit))));
           },
           child: Card(
             color: Theme.of(context).colorScheme.surface,
@@ -62,7 +63,7 @@ class _UserListElementState extends State<UserListElement> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        BlocProvider.of<RecipientCubit>(context).value!.username,
+                        widget.user.username!,
                         style: const TextStyle(fontSize: 16),
                       ),
                     ),
