@@ -15,8 +15,7 @@ class MessageSentEvent extends ChatWidgetEvent {
 }
 
 class ListenToStreamEvent extends ChatWidgetEvent {
-  final String url;
   final User user;
 
-  ListenToStreamEvent(this.url, {required this.user});
+  ListenToStreamEvent({required this.user});
 }

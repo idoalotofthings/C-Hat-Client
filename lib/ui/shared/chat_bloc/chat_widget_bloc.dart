@@ -1,31 +1,32 @@
 import 'package:c_hat/model/message.dart';
 import 'package:c_hat/model/user.dart';
-import 'package:c_hat/network/websocket_client.dart';
 import 'package:c_hat/ui/shared/chat_bloc/chat_widget_event.dart';
+import 'package:c_hat/ui/shared/chat_bloc/chat_widget_state.dart';
 import 'package:c_hat/ui/shared/chat_repository/chat_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChatWidgetBloc extends Bloc<ChatWidgetEvent, List<Message>> {
-  List<Message> value;
+class ChatWidgetBloc extends Bloc<ChatWidgetEvent, ChatState> {
+  ChatState value;
+  List<Message> messages = [];
   late User user;
 
-  late ChatRepository repository;
+  final ChatRepository repository;
 
-  ChatWidgetBloc({this.value = const []}) : super(value) {
+  ChatWidgetBloc(this.repository, {required this.value}) : super(value) {
     on<ListenToStreamEvent>((event, emit) {
-      repository = ChatRepository(ChatWebSocketClient(event.url));
-      repository.channel.stream.listen((event) {
+      repository.client.stream.listen((event) {
         add(MessageReceivedEvent(message: Message.fromJson(event)));
       });
     });
 
     on<MessageReceivedEvent>((event, emit) {
-      value.add(event.message!);
-      emit(value);
+      messages.add(event.message!);
+      emit(MessageReceivedState(List.from(messages)));
     });
 
     on<MessageSentEvent>((event, emit) {
-      repository.channel.sink.add(event.message?.toJson());
+      add(MessageReceivedEvent(message: event.message));
+      repository.client.channel.sink.add(event.message?.toJson());
     });
   }
 }
