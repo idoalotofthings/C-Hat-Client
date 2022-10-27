@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:c_hat/platform_ui/src/platform.dart';
+import 'package:platform_ui/platform_ui.dart';
 import 'package:c_hat/theme/material/material_theme.dart';
 import 'package:c_hat/ui/mobile/login/login_widget.dart';
 import 'package:universal_io/io.dart' as io show Platform;

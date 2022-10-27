@@ -2,7 +2,7 @@ import 'package:flutter/material.dart' as material;
 import 'package:flutter/cupertino.dart' as cupertino;
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'platform_widget.dart';
-import 'package:c_hat/platform_ui/src/platform.dart';
+import '../src/platform.dart';
 
 class PlatformButton extends PlatformWidget {
   
@@ -43,8 +43,8 @@ class PlatformFilledButton extends PlatformButton {
       case Platform.web:
         return material.ElevatedButton(
           style: material.ElevatedButton.styleFrom(
-            primary: material.Theme.of(context).colorScheme.primary,
-            onPrimary: material.Theme.of(context).colorScheme.onPrimary,
+            backgroundColor: material.Theme.of(context).colorScheme.primary,
+            foregroundColor: material.Theme.of(context).colorScheme.onPrimary,
           ),
           onPressed: onPressed, 
           child: child

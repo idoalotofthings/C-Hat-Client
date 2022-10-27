@@ -1,7 +1,7 @@
 import 'package:c_hat/ui/shared/heading_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:c_hat/platform_ui/platform_ui.dart';
+import 'package:platform_ui/platform_ui.dart';
 import 'package:universal_io/io.dart';
 
 class LoginRoute extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:c_hat/model/user.dart';
-import 'package:c_hat/platform_ui/platform_ui.dart';
+import 'package:platform_ui/platform_ui.dart';
 
 class UserView extends StatelessWidget {
   final User user;
@@ -15,10 +15,10 @@ class UserView extends StatelessWidget {
     return PlatformScaffold(
       platform,
       appBar: AppBar(
-        title: Text(user.username),
+        title: Text(user.username!),
       ),
       cupertinoBar: CupertinoNavigationBar(
-        middle: Text(user.username),
+        middle: Text(user.username!),
       ),
       body: Column(
         children: [
@@ -34,7 +34,7 @@ class UserView extends StatelessWidget {
                       backgroundColor: Colors.red,
                       foregroundImage: AssetImage("assets/images/user_avatar.png")),
                 ),
-                Text(user.username, style: const TextStyle(fontSize: 20))
+                Text(user.username!, style: const TextStyle(fontSize: 20))
               ],
             ),
           ),
