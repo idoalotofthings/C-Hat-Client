@@ -57,10 +57,10 @@ class _UserListRouteState extends State<UserListRoute> {
               context: context,
               builder: (context) {
                 return SizedBox(
-                  height: 100,
+                  height: 300,
                   child: AlertDialog(
                       content: SizedBox(
-                    height: 100,
+                    height: 300,
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

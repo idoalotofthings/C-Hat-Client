@@ -1,10 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.github.justincodinguk.c-hat">
-
-    <uses-permission android:name="android.permission.INTERNET"/>
+    package="io.github.justincodinguk.chat.c_hat_client">
+        <uses-permission android:name="android.permission.INTERNET"/>
 
    <application
-        android:label="C-Hat"
+        android:label="c_hat_client"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

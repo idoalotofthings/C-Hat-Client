@@ -85,7 +85,7 @@ class LoginRoute extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      width: 70,
+                      width: 40,
                     )
                   ],
                 ),
@@ -144,7 +144,7 @@ class LoginRoute extends StatelessWidget {
                                       return const SizedBox(
                                         child: AlertDialog(
                                             content: SizedBox(
-                                                height: 10,
+                                                height: 100,
                                                 width: 10,
                                                 child:
                                                     CircularProgressIndicator())),
